@@ -24,6 +24,7 @@ CURRENT_YEAR = date.today().year
 def birth_reminder(users):
     week_start = TODAY - timedelta(days=TODAY.weekday()-7)
     week_end = week_start + timedelta(days=6)
+    delete_days = []
     for user in users:
         user_birthday = datetime.strptime(user['birthday'], '%Y-%m-%d').date()
         age = CURRENT_YEAR - user_birthday.year
@@ -33,6 +34,11 @@ def birth_reminder(users):
                 DAYS[user_birthday.strftime('%A')].append([user['name'], age])
             else:
                 DAYS['Monday'].append([user['name'], age])
+    for day in DAYS:
+        if not DAYS[day]:
+            delete_days.append(day)
+    for day in delete_days:
+        del DAYS[day]
     return DAYS
     
 print(birth_reminder(users))
