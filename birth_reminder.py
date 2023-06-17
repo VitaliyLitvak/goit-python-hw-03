@@ -19,9 +19,7 @@ def birth_reminder(users):
     today = date.today()
     week_start = today - timedelta(days=today.weekday()-5)
     week_end = week_start + timedelta(days=6)
-    delete_days = []
-    print(week_start, week_end)
-    DAYS = {}
+    result = {}
     # Пошук потрібних юзерів
     for user in users:
         user_birthday = datetime.strptime(user['birthday'], '%Y-%m-%d').date()
@@ -29,11 +27,11 @@ def birth_reminder(users):
         user_birthday = user_birthday.replace(year=current_year)
         if week_start <= user_birthday <= week_end:
             if user_birthday.weekday() < 5:
-                DAYS.setdefault(user_birthday.strftime('%A'), []).append([user['name'], age])
+                result.setdefault(user_birthday.strftime('%A'), []).append([user['name'], age])
             else:
-                DAYS.setdefault('Monday', []).append([user['name'], age])
+                result.setdefault('Monday', []).append([user['name'], age])
         
-    return DAYS
+    return result
     
     
 print(birth_reminder(users))
